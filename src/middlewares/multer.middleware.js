@@ -17,4 +17,4 @@ export const upload = multer({
   storage,
 })
 
-const upload = multer({ storage: storage })
+// const upload = multer({ storage: storage })
