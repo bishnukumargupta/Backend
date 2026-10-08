@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dashboard — StreamVibe</title>
+    <meta name="description" content="Manage your StreamVibe channel, view stats, and control your videos."/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+    <div class="nav-left">
+        <button class="menu-btn" id="menuBtn"><span></span><span></span><span></span></button>
+        <a href="index.html" class="logo"><div class="logo-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="url(#lg5)"/><polygon points="11,8 22,14 11,20" fill="white"/><defs><linearGradient id="lg5" x1="0" y1="0" x2="28" y2="28"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#ec4899"/></linearGradient></defs></svg></div><span>StreamVibe</span></a>
+    </div>
+    <div class="nav-right">
+        <div id="guestNav"><a href="login.html" class="btn btn-ghost">Log In</a><a href="register.html" class="btn btn-primary">Register</a></div>
+        <div id="userNav" style="display:none;">
+            <a href="upload.html" class="btn btn-primary">+ Upload Video</a>
+            <div class="avatar-wrapper" id="avatarWrapper">
+                <img src="" alt="Avatar" class="nav-avatar" id="navAvatar"/>
+                <div class="avatar-dropdown" id="avatarDropdown">
+                    <a href="channel.html" class="dropdown-item">My Channel</a>
+                    <a href="dashboard.html" class="dropdown-item">Dashboard</a>
+                    <hr class="dropdown-divider"/>
+                    <button class="dropdown-item danger" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+        <a href="index.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Home</span></a>
+        <a href="dashboard.html" class="sidebar-item active"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Dashboard</span></a>
+        <a href="upload.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span>Upload</span></a>
+        <a href="channel.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Channel</span></a>
+        <a href="tweets.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Community</span></a>
+    </nav>
+</aside>
+
+<div class="dashboard-layout" id="mainContent">
+    <h1 class="page-title">Channel Dashboard</h1>
+    <p class="page-subtitle">Track your channel performance and manage your videos</p>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid" id="statsGrid">
+        <div class="stat-card"><div class="stat-icon">👁️</div><div class="stat-value" id="statViews">—</div><div class="stat-label">Total Views</div></div>
+        <div class="stat-card"><div class="stat-icon">🎬</div><div class="stat-value" id="statVideos">—</div><div class="stat-label">Total Videos</div></div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="statSubs">—</div><div class="stat-label">Subscribers</div></div>
+        <div class="stat-card"><div class="stat-icon">❤️</div><div class="stat-value" id="statLikes">—</div><div class="stat-label">Total Likes</div></div>
+    </div>
+
+    <!-- Videos Section -->
+    <div class="section-header">
+        <h2 class="section-title">Your Videos</h2>
+        <a href="upload.html" class="btn btn-primary">+ Upload New</a>
+    </div>
+
+    <div style="overflow-x:auto;">
+        <table class="videos-table" id="videosTable">
+            <thead>
+                <tr>
+                    <th>Video</th>
+                    <th>Status</th>
+                    <th>Views</th>
+                    <th>Likes</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="videosTableBody">
+                <!-- Skeleton rows -->
+                <tr><td colspan="6" style="text-align:center; padding:40px; color:var(--text-secondary);">
+                    <div class="spinner" style="margin:0 auto;"></div>
+                </td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="dashEmptyState" style="display:none; text-align:center; padding:60px 20px;">
+        <div style="font-size:3rem; margin-bottom:12px;">🎬</div>
+        <h3 style="margin-bottom:8px;">No videos yet</h3>
+        <p style="color:var(--text-secondary); margin-bottom:20px;">Start by uploading your first video</p>
+        <a href="upload.html" class="btn btn-primary">Upload Video</a>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+        <h3 class="modal-title">Delete Video?</h3>
+        <p class="modal-text">This action cannot be undone. The video will be permanently removed from StreamVibe.</p>
+        <div class="modal-actions">
+            <button class="btn btn-ghost" id="cancelDelete">Cancel</button>
+            <button class="btn btn-danger" id="confirmDelete">Delete</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+(function(){
+    if(!window.isLoggedIn && typeof requireAuth === 'function') requireAuth();
+
+    let deleteTargetId = null;
+
+    async function loadDashboard() {
+        try {
+            // Stats
+            const statsRes = await Dashboard.getStats();
+            const stats = statsRes?.data || {};
+            document.getElementById('statViews').textContent  = formatViews(stats.totalViews  || 0);
+            document.getElementById('statVideos').textContent = stats.totalVideos || 0;
+            document.getElementById('statSubs').textContent   = formatViews(stats.totalSubscribers || 0);
+            document.getElementById('statLikes').textContent  = formatViews(stats.totalLikes || 0);
+        } catch(_) {
+            // Mock stats
+            document.getElementById('statViews').textContent  = '124K';
+            document.getElementById('statVideos').textContent = '8';
+            document.getElementById('statSubs').textContent   = '1.2K';
+            document.getElementById('statLikes').textContent  = '4.5K';
+        }
+
+        try {
+            const videosRes = await Dashboard.getVideos();
+            const videos = videosRes?.data || [];
+            renderVideosTable(videos);
+        } catch(_) {
+            renderMockVideosTable();
+        }
+    }
+
+    function renderVideosTable(videos) {
+        const tbody = document.getElementById('videosTableBody');
+        if(!videos.length) {
+            tbody.innerHTML = '';
+            document.getElementById('dashEmptyState').style.display = 'block';
+            return;
+        }
+        tbody.innerHTML = videos.map(v => videoRow(v)).join('');
+        attachRowActions();
+    }
+
+    function videoRow(v) {
+        const thumb = v.thumbnail || placeholderThumb(v.title);
+        const status = v.isPublished ? '<span class="badge badge-published">Published</span>' : '<span class="badge badge-unpublished">Private</span>';
+        return `<tr id="row-${v._id}">
+            <td>
+                <div style="display:flex;align-items:center;gap:12px;">
+                    <img src="${thumb}" alt="${v.title}" class="table-thumb" onerror="this.src='${placeholderThumb(v.title)}'"/>
+                    <div>
+                        <div class="table-title">${v.title}</div>
+                        <div class="table-meta">${v.description?.substring(0,60) || ''}${v.description?.length > 60 ? '...' : ''}</div>
+                    </div>
+                </div>
+            </td>
+            <td>${status}</td>
+            <td>${formatViews(v.views || 0)}</td>
+            <td>${v.likesCount || 0}</td>
+            <td>${timeAgo(v.createdAt)}</td>
+            <td>
+                <div class="table-actions">
+                    <button class="icon-btn toggle-btn" data-id="${v._id}" data-published="${v.isPublished}" title="Toggle publish">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                    <a href="video.html?id=${v._id}" class="icon-btn" title="View video">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    </a>
+                    <button class="icon-btn delete delete-btn" data-id="${v._id}" title="Delete video">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                    </button>
+                </div>
+            </td>
+        </tr>`;
+    }
+
+    function renderMockVideosTable() {
+        const mockVideos = [
+            { _id:'m1', title:'Build a Full Stack App with Node.js & React', description:'Complete full-stack tutorial', isPublished:true, views:124000, likesCount:3400, createdAt: new Date(Date.now()-2*3600000).toISOString(), thumbnail:null },
+            { _id:'m2', title:'MongoDB Aggregation Pipeline Deep Dive', description:'Master the aggregation pipeline', isPublished:true, views:89000, likesCount:2100, createdAt: new Date(Date.now()-5*3600000).toISOString(), thumbnail:null },
+            { _id:'m3', title:'JWT Authentication Explained Simply', description:'Secure your API with JWT', isPublished:false, views:45000, likesCount:1200, createdAt: new Date(Date.now()-2*86400000).toISOString(), thumbnail:null },
+            { _id:'m4', title:'Express.js Middleware Mastery', description:'Deep dive into Express middleware', isPublished:true, views:78000, likesCount:2800, createdAt: new Date(Date.now()-4*86400000).toISOString(), thumbnail:null },
+        ];
+        renderVideosTable(mockVideos);
+    }
+
+    function attachRowActions() {
+        // Toggle publish
+        document.querySelectorAll('.toggle-btn').forEach(btn => {
+            btn.addEventListener('click', async () => {
+                const id = btn.dataset.id;
+                try {
+                    await Videos.togglePublish(id);
+                    showToast('Publish status updated', 'success');
+                    loadDashboard();
+                } catch(_) { showToast('Failed to toggle status', 'error'); }
+            });
+        });
+        // Delete
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                deleteTargetId = btn.dataset.id;
+                document.getElementById('deleteModal').classList.add('open');
+            });
+        });
+    }
+
+    // Modal
+    document.getElementById('cancelDelete').addEventListener('click', () => {
+        document.getElementById('deleteModal').classList.remove('open');
+        deleteTargetId = null;
+    });
+    document.getElementById('confirmDelete').addEventListener('click', async () => {
+        if(!deleteTargetId) return;
+        try {
+            await Videos.delete(deleteTargetId);
+            document.getElementById(`row-${deleteTargetId}`)?.remove();
+            showToast('Video deleted successfully', 'success');
+        } catch(_) { showToast('Failed to delete video', 'error'); }
+        document.getElementById('deleteModal').classList.remove('open');
+        deleteTargetId = null;
+    });
+
+    loadDashboard();
+})();
+</script>
+</body>
+</html>

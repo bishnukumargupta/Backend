@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Watch — StreamVibe</title>
+    <meta name="description" content="Watch videos on StreamVibe." />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar" id="navbar">
+    <div class="nav-left">
+        <button class="menu-btn" id="menuBtn"><span></span><span></span><span></span></button>
+        <a href="index.html" class="logo">
+            <div class="logo-icon">
+                <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="8" fill="url(#lg4)"/><polygon points="11,8 22,14 11,20" fill="white"/><defs><linearGradient id="lg4" x1="0" y1="0" x2="28" y2="28"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#ec4899"/></linearGradient></defs></svg>
+            </div>
+            <span>StreamVibe</span>
+        </a>
+    </div>
+    <div class="nav-center">
+        <div class="search-wrapper">
+            <input type="text" id="searchInput" class="search-input" placeholder="Search videos..." />
+            <button class="search-btn" id="searchBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            </button>
+        </div>
+    </div>
+    <div class="nav-right">
+        <div id="guestNav"><a href="login.html" class="btn btn-ghost">Log In</a><a href="register.html" class="btn btn-primary">Register</a></div>
+        <div id="userNav" style="display:none;">
+            <a href="upload.html" class="btn btn-ghost upload-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Upload</a>
+            <div class="avatar-wrapper" id="avatarWrapper">
+                <img src="" alt="Avatar" class="nav-avatar" id="navAvatar" />
+                <div class="avatar-dropdown" id="avatarDropdown">
+                    <a href="channel.html" class="dropdown-item">My Channel</a>
+                    <a href="dashboard.html" class="dropdown-item">Dashboard</a>
+                    <a href="watch-history.html" class="dropdown-item">Watch History</a>
+                    <hr class="dropdown-divider"/>
+                    <button class="dropdown-item danger" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+    <nav class="sidebar-nav">
+        <a href="index.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="currentColor" stroke-width="2"/></svg><span>Home</span></a>
+        <a href="index.html?tab=trending" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg><span>Trending</span></a>
+        <a href="subscriptions.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span>Subscriptions</span></a>
+        <div class="sidebar-divider"></div>
+        <a href="liked-videos.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg><span>Liked Videos</span></a>
+        <a href="watch-history.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span>History</span></a>
+        <a href="tweets.html" class="sidebar-item"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Community</span></a>
+    </nav>
+</aside>
+
+<!-- MAIN PLAYER LAYOUT -->
+<div class="player-layout" id="playerLayout">
+
+    <!-- Left: video + info + comments -->
+    <div class="player-main">
+        <!-- Video Player -->
+        <div class="video-player-wrapper" id="playerWrapper">
+            <video id="videoPlayer" controls preload="metadata">
+                Your browser does not support HTML5 video.
+            </video>
+        </div>
+
+        <!-- Title & Meta -->
+        <h1 class="video-player-title" id="videoTitle">Loading...</h1>
+        <div class="video-player-meta">
+            <span class="meta-info" id="videoMeta"></span>
+            <div class="action-btns">
+                <button class="action-btn" id="likeBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/></svg>
+                    <span id="likeCount">Like</span>
+                </button>
+                <button class="action-btn" id="shareBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                    Share
+                </button>
+            </div>
+        </div>
+
+        <!-- Channel info + Subscribe -->
+        <div class="channel-info" id="channelInfo">
+            <img src="" alt="Channel" class="channel-avatar-lg" id="channelAvatar" />
+            <div>
+                <div class="channel-name-lg" id="channelName">Loading...</div>
+                <div class="channel-subs-lg" id="channelSubs"></div>
+            </div>
+            <button class="btn btn-primary subscribe-btn" id="subscribeBtn">Subscribe</button>
+        </div>
+
+        <!-- Description -->
+        <div id="videoDescription" style="font-size:0.875rem; color:var(--text-secondary); line-height:1.7; margin-bottom:24px; padding:16px; background:var(--bg-card); border-radius:var(--radius-md); border:1px solid var(--border);"></div>
+
+        <!-- Comments -->
+        <div class="comments-section">
+            <h2 class="comments-title" id="commentsTitle">Comments</h2>
+
+            <div class="comment-form" id="commentFormWrapper" style="display:none;">
+                <img src="" alt="You" class="comment-avatar" id="myAvatar" />
+                <input type="text" id="commentInput" class="comment-input" placeholder="Add a comment..." />
+                <button class="btn btn-primary comment-submit" id="commentSubmit">Post</button>
+            </div>
+
+            <div id="commentsContainer"></div>
+            <div id="commentsEmpty" style="display:none; color:var(--text-secondary); font-size:0.875rem; padding:20px 0;">No comments yet. Be the first to comment!</div>
+        </div>
+    </div>
+
+    <!-- Right: Recommended videos -->
+    <div class="player-sidebar-content">
+        <h3 style="font-size:1rem; font-weight:700; margin-bottom:16px;">Up Next</h3>
+        <div class="recommended-list" id="recommendedList">
+            <!-- Skeleton -->
+            <div style="display:flex;gap:10px;padding:6px;"><div style="width:160px;aspect-ratio:16/9;background:var(--bg-elevated);border-radius:6px;flex-shrink:0;animation:shimmer 1.5s infinite;background-size:200% 100%;"></div><div style="flex:1;"><div style="height:12px;background:var(--bg-elevated);border-radius:6px;margin-bottom:8px;animation:shimmer 1.5s infinite;background-size:200% 100%;"></div><div style="height:10px;width:70%;background:var(--bg-elevated);border-radius:6px;animation:shimmer 1.5s infinite;background-size:200% 100%;"></div></div></div>
+            <div style="display:flex;gap:10px;padding:6px;"><div style="width:160px;aspect-ratio:16/9;background:var(--bg-elevated);border-radius:6px;flex-shrink:0;animation:shimmer 1.5s infinite;background-size:200% 100%;"></div><div style="flex:1;"><div style="height:12px;background:var(--bg-elevated);border-radius:6px;margin-bottom:8px;animation:shimmer 1.5s infinite;background-size:200% 100%;"></div><div style="height:10px;width:70%;background:var(--bg-elevated);border-radius:6px;animation:shimmer 1.5s infinite;background-size:200% 100%;"></div></div></div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script src="js/auth.js"></script>
+<script>
+(function(){
+    const params  = new URLSearchParams(window.location.search);
+    const videoId = params.get('id');
+    if(!videoId) { window.location.href = 'index.html'; return; }
+
+    let videoData = null;
+    let liked     = false;
+    let subscribed= false;
+
+    async function loadVideo() {
+        try {
+            const res = await Videos.getById(videoId);
+            videoData = res?.data;
+            renderVideo(videoData);
+            loadComments();
+            loadRecommended();
+        } catch(err) {
+            console.warn('Could not load video:', err.message);
+            renderMockVideo();
+        }
+    }
+
+    function renderVideo(v) {
+        if(!v) return renderMockVideo();
+        document.title = `${v.title} — StreamVibe`;
+        document.getElementById('videoTitle').textContent = v.title;
+        document.getElementById('videoMeta').textContent = `${formatViews(v.views)} views · ${timeAgo(v.createdAt)}`;
+        document.getElementById('videoDescription').textContent = v.description || 'No description.';
+        document.getElementById('videoPlayer').src = v.videofile || '';
+
+        // Channel info
+        const owner = v.owner || {};
+        const avatar = owner.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${owner.username}`;
+        document.getElementById('channelAvatar').src = avatar;
+        document.getElementById('channelName').textContent = owner.fullName || owner.username || 'Unknown';
+        document.getElementById('channelSubs').textContent = 'Channel';
+        document.getElementById('likeCount').textContent = `Like`;
+
+        if(window.isLoggedIn){
+            document.getElementById('commentFormWrapper').style.display = 'flex';
+            const myUser = window.currentUser;
+            document.getElementById('myAvatar').src = myUser?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=me`;
+        }
+    }
+
+    function renderMockVideo() {
+        document.title = 'Build a Full Stack App — StreamVibe';
+        document.getElementById('videoTitle').textContent = 'Build a Full Stack App with Node.js & React';
+        document.getElementById('videoMeta').textContent = '124K views · 2 hours ago';
+        document.getElementById('videoDescription').textContent = 'In this comprehensive tutorial, we build a complete full-stack application using Node.js, Express, MongoDB, and React. We cover authentication, file uploads, REST APIs, and deployment.';
+        document.getElementById('channelName').textContent = 'Bishnu Kumar';
+        document.getElementById('channelSubs').textContent = '12.4K subscribers';
+        document.getElementById('channelAvatar').src = 'https://api.dicebear.com/7.x/avataaars/svg?seed=bishnukumar';
+        document.getElementById('commentsTitle').textContent = 'Comments (24)';
+        renderMockComments();
+    }
+
+    function renderMockComments() {
+        const mockComments = [
+            { author: 'Alex Dev', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=alex', text: 'This tutorial is gold! Learned so much about authentication patterns.', time: '1 hour ago' },
+            { author: 'Priya Singh', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=priya', text: 'The MongoDB aggregation part blew my mind. Keep it up!', time: '3 hours ago' },
+            { author: 'Rahul M', avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=rahul', text: 'Finally understood JWT tokens properly. Thank you!', time: '5 hours ago' },
+        ];
+        const container = document.getElementById('commentsContainer');
+        container.innerHTML = mockComments.map(c => `
+            <div class="comment-item">
+                <img src="${c.avatar}" alt="${c.author}" class="comment-avatar" />
+                <div class="comment-body">
+                    <div class="comment-author">${c.author} <span>${c.time}</span></div>
+                    <div class="comment-text">${c.text}</div>
+                </div>
+            </div>`).join('');
+    }
+
+    async function loadComments() {
+        try {
+            const res = await Comments.getByVideo(videoId, { page: 1, limit: 20 });
+            const comments = res?.data || [];
+            document.getElementById('commentsTitle').textContent = `Comments (${comments.length})`;
+
+            if(!comments.length) {
+                document.getElementById('commentsEmpty').style.display = 'block';
+                return;
+            }
+
+            const container = document.getElementById('commentsContainer');
+            container.innerHTML = comments.map(c => {
+                const av = c.owner?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${c.owner?.username}`;
+                return `<div class="comment-item">
+                    <img src="${av}" alt="${c.owner?.fullName}" class="comment-avatar" />
+                    <div class="comment-body">
+                        <div class="comment-author">${c.owner?.fullName || 'User'} <span>${timeAgo(c.createdAt)}</span></div>
+                        <div class="comment-text">${c.content}</div>
+                    </div>
+                </div>`;
+            }).join('');
+        } catch(_) { renderMockComments(); }
+    }
+
+    async function loadRecommended() {
+        try {
+            const res = await Videos.getAll({ limit: 10 });
+            const videos = res?.data?.docs || res?.data || [];
+            const list = document.getElementById('recommendedList');
+            if(!videos.length) { loadMockRecommended(); return; }
+            list.innerHTML = videos.filter(v => v._id !== videoId).slice(0, 8).map(v => {
+                const thumb = v.thumbnail || placeholderThumb(v.title);
+                return `<a href="video.html?id=${v._id}" class="rec-card">
+                    <img src="${thumb}" alt="${v.title}" class="rec-thumb" />
+                    <div class="rec-info">
+                        <div class="rec-title">${v.title}</div>
+                        <div class="rec-channel">${v.owner?.fullName || 'Channel'}</div>
+                        <div class="rec-meta">${formatViews(v.views)} views · ${timeAgo(v.createdAt)}</div>
+                    </div>
+                </a>`;
+            }).join('');
+        } catch(_) { loadMockRecommended(); }
+    }
+
+    function loadMockRecommended(){
+        const list = document.getElementById('recommendedList');
+        const items = [
+            { id:'m1', title:'MongoDB Aggregation Pipeline Deep Dive', channel:'Tech Mentor', views:'89K', time:'5 hours ago' },
+            { id:'m2', title:'REST API Design Best Practices 2024', channel:'API Guru', views:'62K', time:'1 day ago' },
+            { id:'m3', title:'JWT Authentication Explained Simply', channel:'Bishnu Kumar', views:'45K', time:'2 days ago' },
+            { id:'m4', title:'Express Middleware Mastery', channel:'Node Master', views:'78K', time:'4 days ago' },
+            { id:'m5', title:'Docker for Node.js Developers', channel:'DevOps Pro', views:'34K', time:'10 days ago' },
+        ];
+        list.innerHTML = items.map((it,i) => `
+            <a href="video.html?id=${it.id}" class="rec-card">
+                <img src="${placeholderThumb(it.title, i+1)}" alt="${it.title}" class="rec-thumb" />
+                <div class="rec-info">
+                    <div class="rec-title">${it.title}</div>
+                    <div class="rec-channel">${it.channel}</div>
+                    <div class="rec-meta">${it.views} views · ${it.time}</div>
+                </div>
+            </a>`).join('');
+    }
+
+    // Like button
+    document.getElementById('likeBtn').addEventListener('click', async () => {
+        if(!window.isLoggedIn) { window.location.href = 'login.html'; return; }
+        liked = !liked;
+        const btn = document.getElementById('likeBtn');
+        btn.classList.toggle('liked', liked);
+        document.getElementById('likeCount').textContent = liked ? 'Liked ✓' : 'Like';
+        try { await Likes.toggleVideo(videoId); } catch(_){}
+    });
+
+    // Subscribe button
+    document.getElementById('subscribeBtn').addEventListener('click', async () => {
+        if(!window.isLoggedIn) { window.location.href = 'login.html'; return; }
+        subscribed = !subscribed;
+        const btn = document.getElementById('subscribeBtn');
+        btn.textContent = subscribed ? 'Subscribed ✓' : 'Subscribe';
+        btn.classList.toggle('subscribed', subscribed);
+        if(videoData?.owner?._id) {
+            try { await Subscriptions.toggle(videoData.owner._id); } catch(_){}
+        }
+    });
+
+    // Share button
+    document.getElementById('shareBtn').addEventListener('click', () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            showToast('Link copied to clipboard!', 'success');
+        });
+    });
+
+    // Post comment
+    document.getElementById('commentSubmit')?.addEventListener('click', async () => {
+        const input = document.getElementById('commentInput');
+        const text  = input.value.trim();
+        if(!text) return;
+
+        try {
+            await Comments.add(videoId, { content: text });
+            const myUser = window.currentUser;
+            const av = myUser?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=me`;
+            const html = `<div class="comment-item">
+                <img src="${av}" alt="You" class="comment-avatar" />
+                <div class="comment-body">
+                    <div class="comment-author">${myUser?.fullName || 'You'} <span>just now</span></div>
+                    <div class="comment-text">${text}</div>
+                </div>
+            </div>`;
+            document.getElementById('commentsContainer').insertAdjacentHTML('afterbegin', html);
+            input.value = '';
+            document.getElementById('commentsEmpty').style.display = 'none';
+        } catch(_) {
+            showToast('Failed to post comment', 'error');
+        }
+    });
+
+    loadVideo();
+})();
+</script>
+</body>
+</html>

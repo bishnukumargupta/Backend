@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>StreamVibe — Watch, Share & Create</title>
+    <meta name="description" content="StreamVibe is a modern video streaming platform. Watch trending videos, subscribe to channels, like and comment on your favourite content." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/home.css" />
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-left">
+            <button class="menu-btn" id="menuBtn" aria-label="Toggle sidebar">
+                <span></span><span></span><span></span>
+            </button>
+            <a href="index.html" class="logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <rect width="28" height="28" rx="8" fill="url(#logoGrad)"/>
+                        <polygon points="11,8 22,14 11,20" fill="white"/>
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="28" y2="28">
+                                <stop offset="0%" stop-color="#7c3aed"/>
+                                <stop offset="100%" stop-color="#ec4899"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span>StreamVibe</span>
+            </a>
+        </div>
+
+        <div class="nav-center">
+            <div class="search-wrapper">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search videos, channels..." autocomplete="off" />
+                <button class="search-btn" id="searchBtn" aria-label="Search">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <div id="guestNav">
+                <a href="login.html" class="btn btn-ghost" id="loginNavBtn">Log In</a>
+                <a href="register.html" class="btn btn-primary" id="registerNavBtn">Register</a>
+            </div>
+            <div id="userNav" style="display:none;">
+                <a href="upload.html" class="btn btn-ghost upload-btn" id="uploadNavBtn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Upload
+                </a>
+                <div class="avatar-wrapper" id="avatarWrapper">
+                    <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=user" alt="Avatar" class="nav-avatar" id="navAvatar" />
+                    <div class="avatar-dropdown" id="avatarDropdown">
+                        <a href="channel.html" class="dropdown-item">My Channel</a>
+                        <a href="dashboard.html" class="dropdown-item">Dashboard</a>
+                        <a href="watch-history.html" class="dropdown-item">Watch History</a>
+                        <hr class="dropdown-divider"/>
+                        <button class="dropdown-item danger" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <a href="index.html" class="sidebar-item active" id="sideHome">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+                <span>Home</span>
+            </a>
+            <a href="index.html?tab=trending" class="sidebar-item" id="sideTrending">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                <span>Trending</span>
+            </a>
+            <a href="subscriptions.html" class="sidebar-item" id="sideSubscriptions">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span>Subscriptions</span>
+            </a>
+            <div class="sidebar-divider"></div>
+            <a href="liked-videos.html" class="sidebar-item" id="sideLiked">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3H14z"/><path d="M7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                <span>Liked Videos</span>
+            </a>
+            <a href="watch-history.html" class="sidebar-item" id="sideHistory">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>History</span>
+            </a>
+            <a href="tweets.html" class="sidebar-item" id="sideTweets">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span>Community</span>
+            </a>
+        </nav>
+    </aside>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main class="main-content" id="mainContent">
+
+        <!-- Filter Chips -->
+        <div class="filter-bar" id="filterBar">
+            <button class="chip active" data-filter="all">All</button>
+            <button class="chip" data-filter="latest">Latest</button>
+            <button class="chip" data-filter="views">Most Viewed</button>
+            <button class="chip" data-filter="oldest">Oldest</button>
+        </div>
+
+        <!-- Video Grid -->
+        <div class="video-grid" id="videoGrid">
+            <!-- Skeleton cards -->
+            <div class="video-card skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-body"><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div></div></div>
+            <div class="video-card skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-body"><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div></div></div>
+            <div class="video-card skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-body"><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div></div></div>
+            <div class="video-card skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-body"><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div></div></div>
+            <div class="video-card skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-body"><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div></div></div>
+            <div class="video-card skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-body"><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div></div></div>
+            <div class="video-card skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-body"><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div></div></div>
+            <div class="video-card skeleton-card"><div class="skeleton-thumb"></div><div class="skeleton-body"><div class="skeleton-line w80"></div><div class="skeleton-line w60"></div></div></div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display:none;">
+            <div class="empty-icon">📹</div>
+            <h2>No videos found</h2>
+            <p>Try a different search or check back later</p>
+        </div>
+
+        <!-- Load More -->
+        <div class="load-more-wrapper" id="loadMoreWrapper" style="display:none;">
+            <button class="btn btn-ghost load-more-btn" id="loadMoreBtn">Load More Videos</button>
+        </div>
+    </main>
+
+    <!-- ===== TOAST ===== -->
+    <div class="toast" id="toast"></div>
+
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

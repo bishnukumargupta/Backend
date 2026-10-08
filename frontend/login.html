@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — StreamVibe</title>
+    <meta name="description" content="Log in to your StreamVibe account to watch, upload and engage with videos." />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-card">
+        <a href="index.html" class="auth-logo">
+            <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
+                <rect width="28" height="28" rx="8" fill="url(#lg2)"/>
+                <polygon points="11,8 22,14 11,20" fill="white"/>
+                <defs><linearGradient id="lg2" x1="0" y1="0" x2="28" y2="28"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#ec4899"/></linearGradient></defs>
+            </svg>
+            StreamVibe
+        </a>
+
+        <h1 class="auth-title">Welcome back</h1>
+        <p class="auth-subtitle">Sign in to continue watching</p>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group">
+                <label class="form-label" for="loginEmail">Email or Username</label>
+                <input type="text" id="loginEmail" class="form-input" placeholder="you@example.com" autocomplete="username" required />
+                <span class="form-error" id="loginEmailErr">Email or username is required</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="loginPassword">Password</label>
+                <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" autocomplete="current-password" required />
+                <span class="form-error" id="loginPasswordErr">Password is required</span>
+            </div>
+
+            <div id="loginApiError" class="form-error" style="margin-bottom:10px; font-size:0.85rem;"></div>
+
+            <button type="submit" class="btn btn-primary form-submit" id="loginSubmit">
+                <span id="loginBtnText">Sign In</span>
+                <span class="spinner" id="loginSpinner" style="display:none;"></span>
+            </button>
+        </form>
+
+        <p class="form-footer">
+            Don't have an account? <a href="register.html">Create one</a>
+        </p>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script>
+(function(){
+    // redirect if already logged in
+    if(localStorage.getItem('accessToken')) {
+        window.location.href = 'index.html';
+    }
+
+    const form     = document.getElementById('loginForm');
+    const spinner  = document.getElementById('loginSpinner');
+    const btnText  = document.getElementById('loginBtnText');
+    const submit   = document.getElementById('loginSubmit');
+    const apiError = document.getElementById('loginApiError');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        apiError.classList.remove('show');
+
+        const email    = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        // Validation
+        let valid = true;
+        if(!email){ document.getElementById('loginEmailErr').classList.add('show'); valid = false; }
+        else document.getElementById('loginEmailErr').classList.remove('show');
+        if(!password){ document.getElementById('loginPasswordErr').classList.add('show'); valid = false; }
+        else document.getElementById('loginPasswordErr').classList.remove('show');
+        if(!valid) return;
+
+        submit.disabled = true;
+        btnText.textContent = 'Signing in...';
+        spinner.style.display = 'inline-block';
+
+        try {
+            const body = { password };
+            // detect email vs username
+            if(email.includes('@')) body.email = email;
+            else body.username = email;
+
+            const res = await Auth.login(body);
+            const token = res?.data?.accessToken;
+            const user  = res?.data?.user;
+
+            localStorage.setItem('accessToken',  token);
+            localStorage.setItem('currentUser',  JSON.stringify(user));
+
+            showToast('Logged in successfully! 🎉', 'success');
+
+            // Redirect to original page or home
+            const params = new URLSearchParams(window.location.search);
+            const redirect = params.get('redirect') || 'index.html';
+            setTimeout(() => { window.location.href = redirect; }, 700);
+
+        } catch(err) {
+            apiError.textContent = err.message || 'Login failed. Please try again.';
+            apiError.classList.add('show');
+        } finally {
+            submit.disabled = false;
+            btnText.textContent = 'Sign In';
+            spinner.style.display = 'none';
+        }
+    });
+})();
+</script>
+</body>
+</html>

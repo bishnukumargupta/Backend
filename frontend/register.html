@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register — StreamVibe</title>
+    <meta name="description" content="Create your free StreamVibe account and start watching and uploading videos today." />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="auth-page">
+    <div class="auth-card" style="max-width:520px;">
+        <a href="index.html" class="auth-logo">
+            <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
+                <rect width="28" height="28" rx="8" fill="url(#lg3)"/>
+                <polygon points="11,8 22,14 11,20" fill="white"/>
+                <defs><linearGradient id="lg3" x1="0" y1="0" x2="28" y2="28"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#ec4899"/></linearGradient></defs>
+            </svg>
+            StreamVibe
+        </a>
+
+        <h1 class="auth-title">Create account</h1>
+        <p class="auth-subtitle">Join thousands of creators and viewers</p>
+
+        <form id="registerForm" novalidate>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="regFullName">Full Name</label>
+                    <input type="text" id="regFullName" class="form-input" placeholder="Bishnu Kumar" required />
+                    <span class="form-error" id="regFullNameErr">Full name is required</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="regUsername">Username</label>
+                    <input type="text" id="regUsername" class="form-input" placeholder="bishnukumar" required />
+                    <span class="form-error" id="regUsernameErr">Username is required</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="regEmail">Email</label>
+                <input type="email" id="regEmail" class="form-input" placeholder="you@example.com" required />
+                <span class="form-error" id="regEmailErr">Valid email is required</span>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label" for="regPassword">Password</label>
+                    <input type="password" id="regPassword" class="form-input" placeholder="Min 6 characters" required />
+                    <span class="form-error" id="regPasswordErr">Password required (min 6 chars)</span>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="regConfirm">Confirm Password</label>
+                    <input type="password" id="regConfirm" class="form-input" placeholder="Repeat password" required />
+                    <span class="form-error" id="regConfirmErr">Passwords don't match</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Avatar <span style="color:var(--red)">*</span></label>
+                <div class="file-upload" id="avatarUpload">
+                    <input type="file" id="regAvatar" accept="image/*" />
+                    <div class="file-upload-icon">🖼️</div>
+                    <div class="file-upload-text">
+                        <strong>Click to upload</strong> or drag & drop your avatar
+                    </div>
+                    <div class="file-preview-name" id="avatarName"></div>
+                </div>
+                <span class="form-error" id="regAvatarErr">Avatar image is required</span>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Cover Image <span style="color:var(--text-secondary);font-weight:400;">(optional)</span></label>
+                <div class="file-upload" id="coverUpload">
+                    <input type="file" id="regCover" accept="image/*" />
+                    <div class="file-upload-icon">🌅</div>
+                    <div class="file-upload-text">
+                        <strong>Click to upload</strong> channel cover image
+                    </div>
+                    <div class="file-preview-name" id="coverName"></div>
+                </div>
+            </div>
+
+            <div id="regApiError" class="form-error" style="margin-bottom:10px; font-size:0.85rem;"></div>
+
+            <button type="submit" class="btn btn-primary form-submit" id="regSubmit">
+                <span id="regBtnText">Create Account</span>
+                <span class="spinner" id="regSpinner" style="display:none;"></span>
+            </button>
+        </form>
+
+        <p class="form-footer">
+            Already have an account? <a href="login.html">Sign in</a>
+        </p>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/api.js"></script>
+<script>
+(function(){
+    if(localStorage.getItem('accessToken')) window.location.href = 'index.html';
+
+    // File label previews
+    document.getElementById('regAvatar').addEventListener('change', function(){
+        document.getElementById('avatarName').textContent = this.files[0]?.name || '';
+    });
+    document.getElementById('regCover').addEventListener('change', function(){
+        document.getElementById('coverName').textContent = this.files[0]?.name || '';
+    });
+
+    // Drag & drop effects
+    ['avatarUpload','coverUpload'].forEach(id => {
+        const el = document.getElementById(id);
+        el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('dragover'); });
+        el.addEventListener('dragleave', () => el.classList.remove('dragover'));
+        el.addEventListener('drop', e => { e.preventDefault(); el.classList.remove('dragover'); });
+    });
+
+    const form     = document.getElementById('registerForm');
+    const spinner  = document.getElementById('regSpinner');
+    const btnText  = document.getElementById('regBtnText');
+    const submit   = document.getElementById('regSubmit');
+    const apiError = document.getElementById('regApiError');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        apiError.classList.remove('show');
+
+        const fullName = document.getElementById('regFullName').value.trim();
+        const username = document.getElementById('regUsername').value.trim();
+        const email    = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const confirm  = document.getElementById('regConfirm').value;
+        const avatar   = document.getElementById('regAvatar').files[0];
+        const cover    = document.getElementById('regCover').files[0];
+
+        // Validation
+        let valid = true;
+        const show = (id) => { document.getElementById(id).classList.add('show'); valid = false; };
+        const hide = (id) => document.getElementById(id).classList.remove('show');
+
+        fullName ? hide('regFullNameErr') : show('regFullNameErr');
+        username ? hide('regUsernameErr') : show('regUsernameErr');
+        (email && email.includes('@')) ? hide('regEmailErr') : show('regEmailErr');
+        (password && password.length >= 6) ? hide('regPasswordErr') : show('regPasswordErr');
+        (confirm === password) ? hide('regConfirmErr') : show('regConfirmErr');
+        avatar ? hide('regAvatarErr') : show('regAvatarErr');
+
+        if(!valid) return;
+
+        submit.disabled = true;
+        btnText.textContent = 'Creating account...';
+        spinner.style.display = 'inline-block';
+
+        try {
+            const fd = new FormData();
+            fd.append('fullName', fullName);
+            fd.append('username', username.toLowerCase());
+            fd.append('email', email);
+            fd.append('password', password);
+            fd.append('avatar', avatar);
+            if(cover) fd.append('coverImage', cover);
+
+            await Auth.register(fd);
+
+            showToast('Account created! Please sign in 🎉', 'success');
+            setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+
+        } catch(err) {
+            apiError.textContent = err.message || 'Registration failed. Please try again.';
+            apiError.classList.add('show');
+        } finally {
+            submit.disabled = false;
+            btnText.textContent = 'Create Account';
+            spinner.style.display = 'none';
+        }
+    });
+})();
+</script>
+</body>
+</html>
